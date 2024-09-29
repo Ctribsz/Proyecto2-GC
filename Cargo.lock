@@ -447,6 +447,7 @@ dependencies = [
  "minifb",
  "nalgebra-glm",
  "rand 0.8.5",
+ "rayon",
 ]
 
 [[package]]

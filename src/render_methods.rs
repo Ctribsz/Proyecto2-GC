@@ -1,128 +1,12 @@
-mod framebuffer;
-mod ray_intersect;
-mod cube;
-mod color;
-mod camera;
-mod light;
-mod material;
-mod texture;
-mod diorama;
-
-use minifb::{ Window, WindowOptions, Key };
+use rayon::prelude::*;
 use nalgebra_glm::Vec3;
-use std::time::Duration;
-use std::f32::consts::PI;
 use crate::color::Color;
 use crate::framebuffer::Framebuffer;
 use crate::camera::Camera;
 use crate::light::Light;
-use crate::material::Material;
-use std::time::Instant;
-use crate::diorama::create_diorama;
-use crate::texture::load_texture;
-use rayon::prelude::*;
 use crate::ray_intersect::{Intersect, RayIntersect};
 use crate::texture::{calculate_uv, get_texture_color};
 use crate::cube::Cube;
-
-fn main() {
-    let window_width = 800;
-    let window_height = 600;
-    
-    // Reducimos el tamaño del framebuffer a la mitad de la ventana
-    let framebuffer_scale_factor = 0.75;  // Renderizamos a la mitad de la resolución
-    let framebuffer_width = (window_width as f32 * framebuffer_scale_factor) as usize;
-    let framebuffer_height = (window_height as f32 * framebuffer_scale_factor) as usize;
-    
-    let mut framebuffer = Framebuffer::new(framebuffer_width, framebuffer_height);
-
-    let mut window = Window::new(
-        "Diorama - Upscaled",
-        window_width,
-        window_height,
-        WindowOptions::default(),
-    ).unwrap();
-
-    // Cargar texturas para los cubos
-    let (grass_texture, grass_width, grass_height) = load_texture("assets/grass_carried.png");
-    let (dirt_texture, dirt_width, dirt_height) = load_texture("assets/wool_black.png");
-
-    // Crear materiales con texturas
-    let grass_material = Material {
-        diffuse: None,
-        texture: Some(grass_texture),
-        texture_width: grass_width,
-        texture_height: grass_height,
-        specular: 50.0,
-        albedo: [0.9, 0.1],
-    };
-
-    let dirt_material = Material {
-        diffuse: None,
-        texture: Some(dirt_texture),
-        texture_width: dirt_width,
-        texture_height: dirt_height,
-        specular: 30.0,
-        albedo: [0.8, 0.2],
-    };
-
-    // Llamar a la función que genera el diorama manualmente
-    let objects = create_diorama(grass_material, dirt_material);
-
-    let light = Light::new(
-        Vec3::new(5.0, 5.0, 5.0),
-        Color::new(255, 255, 255),
-        10.0
-    );    
-
-    let rotation_speed = PI/5.0;
-    let mut last_frame_time = Instant::now();
-
-    let mut camera = Camera::new(
-        Vec3::new(0.0, 0.0, 5.0),
-        Vec3::new(0.0, 0.0, 0.0),
-        Vec3::new(0.0, 1.0, 0.0),
-    );   
-
-    while window.is_open() && !window.is_key_down(Key::Escape) {
-        // Calcula delta time
-        let current_time = Instant::now();
-        let delta_time = current_time.duration_since(last_frame_time).as_secs_f32();
-        last_frame_time = current_time;
-    
-        let adjusted_rotation_speed = rotation_speed * delta_time;
-    
-        // Movimientos de la cámara usando el delta time
-        if window.is_key_down(Key::Left) {
-            camera.orbit(adjusted_rotation_speed, 0.0);
-        }
-        if window.is_key_down(Key::Right) {
-            camera.orbit(-adjusted_rotation_speed, 0.0);
-        }
-        if window.is_key_down(Key::Up) {
-            camera.orbit(0.0, -adjusted_rotation_speed);
-        }
-        if window.is_key_down(Key::Down) {
-            camera.orbit(0.0, adjusted_rotation_speed);
-        }
-    
-        framebuffer.clear();  // Limpiar el framebuffer reducido antes de renderizar
-    
-        // Renderizamos en el framebuffer reducido
-        render(&mut framebuffer, &objects, &camera, &light);
-
-        // Escalar el framebuffer reducido al tamaño completo de la ventana
-        let scaled_buffer = upscale_framebuffer(&framebuffer, window_width, window_height);
-    
-        // Actualizar la ventana con el buffer escalado
-        if let Err(e) = window.update_with_buffer(&scaled_buffer, window_width, window_height) {
-            println!("Error al actualizar el buffer: {:?}", e);
-        }
-    
-        std::thread::sleep(Duration::from_millis(16));  // Aproximadamente 60 FPS
-    }
-}
-
 
 fn reflect(incident: &Vec3, normal: &Vec3) -> Vec3 {
     incident - 2.0 * incident.dot(normal) * normal

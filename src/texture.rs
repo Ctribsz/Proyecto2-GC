@@ -5,10 +5,7 @@ pub fn load_texture(file_path: &str) -> (Vec<u8>, u32, u32) {
     let img = image::open(file_path).expect(&format!("Error al cargar la textura: {}", file_path));
     let img = img.to_rgba8();
     let (width, height) = img.dimensions();
-    
-    // Debug para verificar si la textura se carga correctamente
-    println!("Textura cargada desde '{}': {}x{}, longitud del vector de píxeles: {}", file_path, width, height, img.as_raw().len());
-    
+        
     (img.into_raw(), width, height)  // Convertimos la imagen en un vector de bytes RGBA
 }
 

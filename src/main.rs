@@ -16,10 +16,8 @@ use crate::color::Color;
 use crate::framebuffer::Framebuffer;
 use crate::camera::Camera;
 use crate::light::Light;
-use crate::material::Material;
 use std::time::Instant;
-use crate::diorama::create_diorama;
-use crate::texture::load_texture;
+use crate::diorama::generate_diorama;
 use rayon::prelude::*;
 use crate::ray_intersect::{Intersect, RayIntersect};
 use crate::texture::{calculate_uv, get_texture_color};
@@ -43,36 +41,13 @@ fn main() {
         WindowOptions::default(),
     ).unwrap();
 
-    // Cargar texturas para los cubos
-    let (grass_texture, grass_width, grass_height) = load_texture("assets/grass_carried.png");
-    let (dirt_texture, dirt_width, dirt_height) = load_texture("assets/wool_black.png");
-
-    // Crear materiales con texturas
-    let grass_material = Material {
-        diffuse: None,
-        texture: Some(grass_texture),
-        texture_width: grass_width,
-        texture_height: grass_height,
-        specular: 50.0,
-        albedo: [0.9, 0.1],
-    };
-
-    let dirt_material = Material {
-        diffuse: None,
-        texture: Some(dirt_texture),
-        texture_width: dirt_width,
-        texture_height: dirt_height,
-        specular: 30.0,
-        albedo: [0.8, 0.2],
-    };
-
     // Llamar a la función que genera el diorama manualmente
-    let objects = create_diorama(grass_material, dirt_material);
+    let objects = generate_diorama();
 
     let light = Light::new(
         Vec3::new(5.0, 5.0, 5.0),
         Color::new(255, 255, 255),
-        10.0
+        3.0
     );    
 
     let rotation_speed = PI/5.0;
@@ -119,7 +94,7 @@ fn main() {
             println!("Error al actualizar el buffer: {:?}", e);
         }
     
-        std::thread::sleep(Duration::from_millis(16));  // Aproximadamente 60 FPS
+        std::thread::sleep(Duration::from_millis(10));  // Aproximadamente 60 FPS
     }
 }
 
@@ -136,7 +111,7 @@ fn cast_ray(ray_origin: &Vec3, ray_direction: &Vec3, objects: &[Cube], light: &L
     for object in objects {
         // Verificamos si el objeto está cerca de la cámara antes de calcular intersecciones
         let distance_to_camera = (object.min - *ray_origin).magnitude();
-        if distance_to_camera > 10.0 {  // Omitimos objetos que están demasiado lejos (ajusta la distancia según la necesidad)
+        if distance_to_camera > 20.0 {  // Omitimos objetos que están demasiado lejos (ajusta la distancia según la necesidad)
             continue;
         }
 

@@ -100,11 +100,374 @@ pub fn generate_diorama() -> Vec<Cube> {
     }
 
     //Elementos unicos dentro del bioma
+    //Azalea fila 1
     objects.push(Cube {
-        min: Vec3::new(3.0, 2.0, 4.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
-        max: Vec3::new(3.0 + cube_size, 2.0 + cube_size, 4.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        min: Vec3::new(3.5, 3.5, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 3.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
         material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
     });
 
+    objects.push(Cube {
+        min: Vec3::new(3.0, 3.5, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.0 + cube_size, 3.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(2.5, 3.5, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(2.5 + cube_size, 3.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+    
+    //Azalea fila 2
+    objects.push(Cube {
+        min: Vec3::new(3.5, 3.0, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 3.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.0, 3.0, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.0 + cube_size, 3.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(2.5, 3.0, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(2.5 + cube_size, 3.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Azalea fila 3
+    objects.push(Cube {
+        min: Vec3::new(3.5, 2.5, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 2.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.0, 2.5, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.0 + cube_size, 2.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 2.0, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 2.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.0, 2.0, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.0 + cube_size, 2.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 1.5, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 1.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.0, 2.5, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.0 + cube_size, 2.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::azalea(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Bamboo
+    //Bamboo fila 1
+    objects.push(Cube {
+        min: Vec3::new(3.5, 3.5, 0.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 3.5 + cube_size, cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::bamboo(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 3.5, 0.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 3.5 + cube_size, 0.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::bamboo(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 3.5, 1.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 3.5 + cube_size, 1.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::bamboo(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 3.5, 1.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 3.5 + cube_size, 1.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::bamboo(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Bamboo fila 2
+    objects.push(Cube {
+        min: Vec3::new(3.5, 3.0, 0.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 3.0 + cube_size, cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::bamboo(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 3.0, 0.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 3.0 + cube_size, 0.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::bamboo(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 3.0, 1.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 3.0 + cube_size, 1.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::bamboo(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+    
+
+    //Bamboo fila 3
+    objects.push(Cube {
+        min: Vec3::new(3.5, 2.5, 0.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 2.5 + cube_size, cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::bamboo(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 2.5, 0.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 2.5 + cube_size, 0.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::bamboo(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Bamboo fila 4
+    objects.push(Cube {
+        min: Vec3::new(3.5, 2.0, 0.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 2.0 + cube_size, cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::bamboo(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Mossy blocks
+    //Fila 1
+    objects.push(Cube {
+        min: Vec3::new(0.0, 2.0, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 2.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(0.0, 2.5, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 2.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(0.0, 3.0 ,3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 3.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(0.0, 3.5 ,3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 3.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Fila 2
+    objects.push(Cube {
+        min: Vec3::new(0.5, 2.5, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.5 + cube_size, 2.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(0.5, 3.0 ,3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.5 + cube_size, 3.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(0.5, 3.5 ,3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.5 + cube_size, 3.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Fila 3
+    objects.push(Cube {
+        min: Vec3::new(1.0, 3.0 ,3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(1.0 + cube_size, 3.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(1.0, 3.5 ,3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(1.0 + cube_size, 3.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(1.0, 3.0 ,3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(1.0 + cube_size, 3.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    // Fila 4
+    objects.push(Cube {
+        min: Vec3::new(1.5, 3.5 ,3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(1.5 + cube_size, 3.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Moggsy blocks 2
+    objects.push(Cube {
+        min: Vec3::new(3.5, 1.0 ,3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 1.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy_block(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 0.5 ,3.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 0.5 + cube_size, 3.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy_block(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 0.5 ,2.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 0.5 + cube_size, 2.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy_block(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.0, 0.5 ,3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.0 + cube_size, 0.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy_block(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Grass and dirt blocks
+    objects.push(Cube {
+        min: Vec3::new(3.5, 0.5 , 0.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 0.5 + cube_size, 0.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::grass(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.0, 0.5 , 0.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.0 + cube_size, 0.5 + cube_size, 0.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::grass(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 0.5 , 0.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 0.5 + cube_size, 0.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::dirt(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 0.5 , 1.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 0.5 + cube_size, 1.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::dirt(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 0.5 , 1.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 0.5 + cube_size, 1.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::moosy(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 1.0 , 0.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 1.0 + cube_size, 0.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::concrete(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Esmeraldas y diamantes
+    objects.push(Cube {
+        min: Vec3::new(3.5, 2.5 , 2.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 2.5 + cube_size, 2.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::emerald(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(3.5, 2.5 , 2.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(3.5 + cube_size, 2.5 + cube_size, 2.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::emerald(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+    
+    //Diamantes
+    objects.push(Cube {
+        min: Vec3::new(2.5, 0.5 , 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(2.5 + cube_size, 0.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::diamond(),  // Material del cubo (o cualquier otro material que prefieras)
+    });    
+
+    objects.push(Cube {
+        min: Vec3::new(2.0, 0.5 , 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(2.0 + cube_size, 0.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::diamond(),  // Material del cubo (o cualquier otro material que prefieras)
+    });    
+
+
+    objects.push(Cube {
+        min: Vec3::new(2.0, 1.0, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(2.0 + cube_size, 1.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::diamond(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Concreto 
+    objects.push(Cube {
+        min: Vec3::new(0.0, 1.5, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 1.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::concrete(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(0.0, 1.0, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 1.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::concrete(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(0.0, 0.5, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 0.5 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::concrete(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+    
+    //Fila 2
+    objects.push(Cube {
+        min: Vec3::new(0.0, 1.0, 3.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 1.0 + cube_size, 3.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::concrete(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(0.0, 0.5, 3.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 0.5 + cube_size, 3.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::concrete(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Fila 3
+    objects.push(Cube {
+        min: Vec3::new(0.0, 0.5, 2.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 0.5 + cube_size, 2.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::concrete(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+
+    //Glass
+    objects.push(Cube {
+        min: Vec3::new(2.0, 2.0, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(2.0 + cube_size, 2.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::glass(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(1.5, 2.0, 3.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(1.5 + cube_size, 2.0 + cube_size, 3.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::glass(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    //Lamp
+    objects.push(Cube {
+        min: Vec3::new(2.0, 3.5, 2.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(2.0 + cube_size, 3.5 + cube_size, 2.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::lamp(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+
+    
     objects
 }

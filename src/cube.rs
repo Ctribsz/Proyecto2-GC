@@ -2,6 +2,7 @@ use nalgebra_glm::Vec3;
 use crate::ray_intersect::{RayIntersect, Intersect};
 use crate::material::Material;
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct Cube {
     pub min: Vec3, // Coordenada mínima (esquina inferior del cubo)
     pub max: Vec3, // Coordenada máxima (esquina superior del cubo)
@@ -49,3 +50,12 @@ impl RayIntersect for Cube {
         Intersect::empty()
     }
 }
+
+impl Cube {
+    // Método para obtener el centro del cubo
+    pub fn center(&self) -> Vec3 {
+        // El centro es el punto medio entre las coordenadas mínimas y máximas
+        (self.min + self.max) * 0.5
+    }
+}
+

@@ -28,7 +28,7 @@ fn main() {
     let window_height = 600;
     
     // Reducimos el tamaño del framebuffer a la mitad de la ventana
-    let framebuffer_scale_factor = 0.75;  // Renderizamos a la mitad de la resolución
+    let framebuffer_scale_factor = 0.50;  // Renderizamos a la mitad de la resolución
     let framebuffer_width = (window_width as f32 * framebuffer_scale_factor) as usize;
     let framebuffer_height = (window_height as f32 * framebuffer_scale_factor) as usize;
     
@@ -44,20 +44,20 @@ fn main() {
     // Llamar a la función que genera el diorama manualmente
     let objects = generate_diorama();
 
-    let light = Light::new(
-        Vec3::new(5.0, 5.0, 5.0),
-        Color::new(255, 255, 255),
-        3.0
-    );    
+    let mut light = Light::new(
+        Vec3::new(-2.5, 7.0, -2.5),  // Ajusta la posición de la luz
+        Color::new(128, 255, 128),   // Color de la luz
+        50.0  // Intensidad de la luz
+    );          
 
     let rotation_speed = PI/5.0;
     let mut last_frame_time = Instant::now();
 
     let mut camera = Camera::new(
-        Vec3::new(0.0, 0.0, 5.0),
-        Vec3::new(0.0, 0.0, 0.0),
-        Vec3::new(0.0, 1.0, 0.0),
-    );   
+        Vec3::new(0.0, 10.0, -10.0),  // Cambiamos la posición de la cámara (más alto y alejado)
+        Vec3::new(0.0, 5.0, 0.0),     // Apuntamos hacia el centro del diorama
+        Vec3::new(0.0, 1.0, 0.0),     // Vector "up", ajustado para la orientación
+    );       
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         // Calcula delta time
@@ -80,7 +80,30 @@ fn main() {
         if window.is_key_down(Key::Down) {
             camera.orbit(0.0, adjusted_rotation_speed);
         }
-    
+
+        // Cambiar la intensidad con teclas '+' y '-'
+        if window.is_key_down(Key::Equal) {  // Aumentar intensidad con '+'
+        light.intensity += 0.1;
+        }
+
+        if window.is_key_down(Key::Minus) {  // Disminuir intensidad con '-'
+            light.intensity -= 0.1;
+            if light.intensity < 0.0 {
+                light.intensity = 0.0;  // Evitar que la intensidad sea negativa
+            }
+        }
+
+        // Cambiar color con teclas numéricas
+        if window.is_key_down(Key::Key1) {  // Amarillo reconfortante
+            light.color = Color::new(255, 223, 128);
+        }
+        if window.is_key_down(Key::Key2) {  // Azul de anochecer
+            light.color = Color::new(128, 128, 255);
+        }
+        if window.is_key_down(Key::Key3) {  // Verde brillante
+            light.color = Color::new(128, 255, 128);
+        }
+
         framebuffer.clear();  // Limpiar el framebuffer reducido antes de renderizar
     
         // Renderizamos en el framebuffer reducido
@@ -94,7 +117,7 @@ fn main() {
             println!("Error al actualizar el buffer: {:?}", e);
         }
     
-        std::thread::sleep(Duration::from_millis(10));  // Aproximadamente 60 FPS
+        std::thread::sleep(Duration::from_millis(16));  // Aproximadamente 60 FPS
     }
 }
 
@@ -103,15 +126,16 @@ fn reflect(incident: &Vec3, normal: &Vec3) -> Vec3 {
     incident - 2.0 * incident.dot(normal) * normal
 }
 
-fn cast_ray(ray_origin: &Vec3, ray_direction: &Vec3, objects: &[Cube], light: &Light) -> Color {
+pub fn cast_ray(ray_origin: &Vec3, ray_direction: &Vec3, objects: &[Cube], light: &Light, distance: f32) -> Color {
     let mut intersect = Intersect::empty();
     let mut zbuffer = f32::INFINITY;
     let mut hit_cube: Option<&Cube> = None;
 
+    // Primer paso: Encontrar el cubo más cercano
     for object in objects {
         // Verificamos si el objeto está cerca de la cámara antes de calcular intersecciones
         let distance_to_camera = (object.min - *ray_origin).magnitude();
-        if distance_to_camera > 20.0 {  // Omitimos objetos que están demasiado lejos (ajusta la distancia según la necesidad)
+        if distance_to_camera > distance {  // Omitimos objetos que están demasiado lejos
             continue;
         }
 
@@ -123,51 +147,70 @@ fn cast_ray(ray_origin: &Vec3, ray_direction: &Vec3, objects: &[Cube], light: &L
         }
     }
 
+    // Si no hay intersección, devolvemos el color de fondo
     if !intersect.is_intersecting {
-        return Color::new(135, 206, 235);  // Color de fondo si no hay intersección
+        return Color::new(0, 0, 0);  // Fondo celeste o el color de fondo deseado
     }
 
-    // Aplicamos luz difusa, luz ambiente y reflect
-    if let Some(cube) = hit_cube {
-        // Dirección de la luz hacia el punto de intersección
-        let light_dir = (light.position - intersect.point).normalize();
+    // Si hay intersección, lanzamos un rayo de sombra desde el punto de intersección hacia la luz
+    let shadow_ray_origin = intersect.point;
+    let shadow_ray_direction = (light.position - shadow_ray_origin).normalize();
+    let light_distance = (light.position - shadow_ray_origin).magnitude();
 
-        // Intensidad difusa basada en el ángulo entre la normal y la dirección de la luz
-        let diffuse_intensity = intersect.normal.dot(&light_dir).max(0.0).min(1.0);
+    // Bandera para determinar si el punto está en sombra
+    let mut in_shadow = false;
 
-        // Intensidad de luz ambiente
-        let ambient_intensity = 0.5;  // Ajusta este valor si deseas más o menos luz ambiente
-
-        // Color base (ya sea de la textura o el color difuso del material)
-        let base_color = if let Some(texture) = &intersect.material.texture {
-            let uv = calculate_uv(intersect.point, intersect.normal, cube.min, cube.max);
-            get_texture_color(texture, intersect.material.texture_width, intersect.material.texture_height, uv)
-        } else {
-            intersect.material.diffuse.unwrap_or(Color::new(255, 255, 255))  // Si no hay textura, usa el color difuso
-        };
-
-        // Cálculo de reflect (iluminación especular)
-        let view_dir = (ray_origin - intersect.point).normalize();  // Dirección hacia la cámara
-        let reflect_dir = reflect(&-light_dir, &intersect.normal);  // Vector reflejado
-        let specular_intensity = view_dir.dot(&reflect_dir).max(0.0).powf(intersect.material.specular);  // Intensidad especular
-        let specular = light.color * intersect.material.albedo[1] * specular_intensity * light.intensity;  // Componente especular
-
-        // Combinamos luz difusa, ambiente y reflect (especular)
-        let diffuse = base_color * intersect.material.albedo[0] * (diffuse_intensity + ambient_intensity);
-        let final_color = diffuse + specular;  // Suma la luz especular
-
-        return final_color;  // Devolvemos el color final con luz difusa, ambiente y especular
+    for object in objects {
+        if let Some(cube) = hit_cube {
+            if cube != object {  // Nos aseguramos de no comparar el cubo con sí mismo
+                let shadow_intersection = object.ray_intersect(&shadow_ray_origin, &shadow_ray_direction);
+                if shadow_intersection.is_intersecting && shadow_intersection.distance < light_distance {
+                    in_shadow = true;  // Si encontramos una intersección, el punto está en sombra
+                    break;
+                }
+            }
+        }
     }
 
-    // Si algo sale mal, devolver un color predeterminado
-    Color::new(255, 0, 0)
+    // Dirección de la luz hacia el punto de intersección
+    let light_dir = (light.position - intersect.point).normalize();
+
+    // Intensidad difusa basada en el ángulo entre la normal y la dirección de la luz
+    let diffuse_intensity = intersect.normal.dot(&light_dir).max(0.0).min(1.0);
+
+    // Color base (ya sea de la textura o el color difuso del material)
+    let base_color = if let Some(texture) = &intersect.material.texture {
+        // **Calcular las coordenadas UV basadas en el cubo y la intersección**
+        let uv = calculate_uv(intersect.point, intersect.normal, hit_cube.unwrap().min, hit_cube.unwrap().max);
+        get_texture_color(texture, intersect.material.texture_width, intersect.material.texture_height, uv)
+    } else {
+        intersect.material.diffuse.unwrap_or(Color::new(255, 255, 255))  // Si no hay textura, usa el color difuso
+    };
+
+    // Si está en sombra, solo aplicamos la luz ambiente
+    let ambient_intensity = 0.1;  // Ajusta este valor si deseas más o menos luz ambiente
+    if in_shadow {
+        return base_color * ambient_intensity;
+    }
+
+    // Cálculo de reflect (iluminación especular)
+    let view_dir = (ray_origin - intersect.point).normalize();
+    let reflect_dir = reflect(&-light_dir, &intersect.normal);
+    let specular_intensity = view_dir.dot(&reflect_dir).max(0.0).powf(intersect.material.specular);
+    let specular = light.color * intersect.material.albedo[1] * specular_intensity * light.intensity;
+
+    // Combinamos luz difusa, ambiente y reflect (especular)
+    let diffuse = base_color * intersect.material.albedo[0] * (diffuse_intensity + ambient_intensity);
+    let final_color = diffuse + specular;
+
+    return final_color;
 }
 
 pub fn render(framebuffer: &mut Framebuffer, objects: &[Cube], camera: &Camera, light: &Light) {
     let width = framebuffer.width as f32;
     let height = framebuffer.height as f32;
     let aspect_ratio = width / height;
-    let fov = std::f32::consts::PI / 3.0;
+    let fov = std::f32::consts::PI / 4.0;
     let perspective_scale = (fov * 0.5).tan();
 
     // Paralelizar el cálculo por filas usando `par_iter_mut`
@@ -183,7 +226,9 @@ pub fn render(framebuffer: &mut Framebuffer, objects: &[Cube], camera: &Camera, 
             let rotated_direction = camera.base_change(&ray_direction);
 
             // Lanzamos rayos hacia los cubos y calculamos el color
-            let pixel_color = cast_ray(&camera.eye, &rotated_direction, objects, light);
+            let distance = 20.0; // O cualquier valor que haga sentido en tu lógica
+            let pixel_color = cast_ray(&camera.eye, &rotated_direction, objects, light, distance);
+
 
             // Establecemos el color en el framebuffer
             row[x] = pixel_color.to_hex();

@@ -1,6 +1,6 @@
 use std::fmt;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Color {
     pub(crate) r: u8,
     pub(crate) g: u8,
@@ -8,6 +8,15 @@ pub struct Color {
 }
 
 impl Color {
+
+    pub fn clamp(&self) -> Color {
+        Color {
+            r: self.r.clamp(0, 255),
+            g: self.g.clamp(0, 255),
+            b: self.b.clamp(0, 255),
+        }
+    }
+    
     // Constructor to initialize the color using r, g, b values
     pub fn new(r: u8, g: u8, b: u8) -> Self {
         Color { r, g, b }

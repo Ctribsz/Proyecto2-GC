@@ -30,4 +30,5 @@ Para poder correr el proyecto en menor calidad o mejor calidad para computadoras
 Para poder cambiar la intensidad de luz puedes incrementar o reducir `INTENSITY` en el archivo de `constants.rs`.
 
 ## Demostración diorama
+![Demo del proyecto](assets/Diorama.gif)
 

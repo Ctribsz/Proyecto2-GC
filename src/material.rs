@@ -209,6 +209,19 @@ impl Material {
             emissive: None,
             emission_intensity: 0.0,
         }
+    }
+
+    pub fn terracota() -> Self {
+        Material {
+            diffuse: None,
+            texture: Some(crate::texture::load_texture("assets/terracota.png").0),
+            texture_width: 16,
+            texture_height: 16,
+            specular: 20.0,      // Relativamente bajo, ya que el pasto no es reflectante
+            albedo: [0.8, 0.1],
+            emissive: None,  // Más luz difusa, menos especular
+            emission_intensity: 0.0,
+        }
     } 
 }
 

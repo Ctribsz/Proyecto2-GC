@@ -467,6 +467,31 @@ pub fn generate_diorama() -> Vec<Cube> {
         material: Material::lamp(),  // Material del cubo (o cualquier otro material que prefieras)
     });
 
+    //Mesa
+    objects.push(Cube {
+        min: Vec3::new(0.0, 0.5, 0.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 0.5 + cube_size, 0.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::terracota(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(0.5, 0.5, 0.0),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.5 + cube_size, 0.5 + cube_size, 0.0 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::terracota(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(0.0, 0.5, 0.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.0 + cube_size, 0.5 + cube_size, 0.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::terracota(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
+    objects.push(Cube {
+        min: Vec3::new(0.5, 0.5, 0.5),  // Coordenada mínima (X, Y, Z) donde quieres que inicie el cubo
+        max: Vec3::new(0.5 + cube_size, 0.5 + cube_size, 0.5 + cube_size),  // Coordenada máxima, sumando el tamaño del cubo
+        material: Material::terracota(),  // Material del cubo (o cualquier otro material que prefieras)
+    });
+
 
     
     objects

@@ -7,6 +7,7 @@ mod light;
 mod material;
 mod texture;
 mod diorama;
+mod constants;
 
 use minifb::{ Window, WindowOptions, Key };
 use nalgebra_glm::Vec3;
@@ -22,13 +23,31 @@ use rayon::prelude::*;
 use crate::ray_intersect::{Intersect, RayIntersect};
 use crate::texture::{calculate_uv, get_texture_color};
 use crate::cube::Cube;
+use rodio::{Decoder, OutputStream, Sink, Source};
+use std::fs::File;
+use std::io::BufReader;
 
 fn main() {
+    // Crear un "output stream" para el audio
+    let (_stream, stream_handle) = OutputStream::try_default().unwrap();
+    let sink = Sink::try_new(&stream_handle).unwrap();
+
+    // Cargar el archivo de música
+    let file = File::open("assets/music.wav").unwrap();  // Cambia el nombre del archivo de música
+    let source = Decoder::new(BufReader::new(file)).unwrap();
+
+    // Hacer que el archivo de música se repita indefinidamente
+    let repeated_source = source.repeat_infinite();
+    sink.append(repeated_source);
+
+    // Controlar el volumen
+    sink.set_volume(1.5);
+
     let window_width = 800;
     let window_height = 600;
     
     // Reducimos el tamaño del framebuffer a la mitad de la ventana
-    let framebuffer_scale_factor = 0.50;  // Renderizamos a la mitad de la resolución
+    let framebuffer_scale_factor = constants::FRAMEBUFFER_SCALE_FACTOR;  // Renderizamos a la mitad de la resolución
     let framebuffer_width = (window_width as f32 * framebuffer_scale_factor) as usize;
     let framebuffer_height = (window_height as f32 * framebuffer_scale_factor) as usize;
     
@@ -45,10 +64,10 @@ fn main() {
     let objects = generate_diorama();
 
     let mut light = Light::new(
-        Vec3::new(-2.5, 7.0, -2.5),  // Ajusta la posición de la luz
+        Vec3::new(2.5, 3.0, 2.5),  // Ajusta la posición de la luz
         Color::new(128, 255, 128),   // Color de la luz
-        50.0  // Intensidad de la luz
-    );          
+        constants::INTENSITY  // Intensidad de la luz
+    );                    
 
     let rotation_speed = PI/5.0;
     let mut last_frame_time = Instant::now();
@@ -68,29 +87,26 @@ fn main() {
         let adjusted_rotation_speed = rotation_speed * delta_time;
     
         // Movimientos de la cámara usando el delta time
-        if window.is_key_down(Key::Left) {
+        if window.is_key_down(Key::A) {
             camera.orbit(adjusted_rotation_speed, 0.0);
         }
-        if window.is_key_down(Key::Right) {
+        if window.is_key_down(Key::D) {
             camera.orbit(-adjusted_rotation_speed, 0.0);
         }
-        if window.is_key_down(Key::Up) {
+        if window.is_key_down(Key::W) {
             camera.orbit(0.0, -adjusted_rotation_speed);
         }
-        if window.is_key_down(Key::Down) {
+        if window.is_key_down(Key::S) {
             camera.orbit(0.0, adjusted_rotation_speed);
         }
 
         // Cambiar la intensidad con teclas '+' y '-'
         if window.is_key_down(Key::Equal) {  // Aumentar intensidad con '+'
-        light.intensity += 0.1;
+            light.intensity = (light.intensity + 0.1).min(50.0);  // Limitar la intensidad máxima
         }
 
         if window.is_key_down(Key::Minus) {  // Disminuir intensidad con '-'
-            light.intensity -= 0.1;
-            if light.intensity < 0.0 {
-                light.intensity = 0.0;  // Evitar que la intensidad sea negativa
-            }
+            light.intensity = (light.intensity - 0.1).max(0.0);  // Evitar que sea negativa
         }
 
         // Cambiar color con teclas numéricas
@@ -119,8 +135,10 @@ fn main() {
     
         std::thread::sleep(Duration::from_millis(16));  // Aproximadamente 60 FPS
     }
-}
 
+    // Detener la música cuando el ciclo de la ventana se detiene
+    sink.stop();
+}
 
 fn reflect(incident: &Vec3, normal: &Vec3) -> Vec3 {
     incident - 2.0 * incident.dot(normal) * normal
@@ -149,7 +167,7 @@ pub fn cast_ray(ray_origin: &Vec3, ray_direction: &Vec3, objects: &[Cube], light
 
     // Si no hay intersección, devolvemos el color de fondo
     if !intersect.is_intersecting {
-        return Color::new(0, 0, 0);  // Fondo celeste o el color de fondo deseado
+        return Color::new(64, 128, 96);  // Fondo celeste o el color de fondo deseado
     }
 
     // Si hay intersección, lanzamos un rayo de sombra desde el punto de intersección hacia la luz
@@ -180,15 +198,17 @@ pub fn cast_ray(ray_origin: &Vec3, ray_direction: &Vec3, objects: &[Cube], light
 
     // Color base (ya sea de la textura o el color difuso del material)
     let base_color = if let Some(texture) = &intersect.material.texture {
-        // **Calcular las coordenadas UV basadas en el cubo y la intersección**
+        // Calcular las coordenadas UV basadas en el cubo y la intersección
         let uv = calculate_uv(intersect.point, intersect.normal, hit_cube.unwrap().min, hit_cube.unwrap().max);
         get_texture_color(texture, intersect.material.texture_width, intersect.material.texture_height, uv)
     } else {
         intersect.material.diffuse.unwrap_or(Color::new(255, 255, 255))  // Si no hay textura, usa el color difuso
     };
 
+    // Luz ambiental ajustada
+    let ambient_intensity = 0.5;  // Menor luz ambiente
+
     // Si está en sombra, solo aplicamos la luz ambiente
-    let ambient_intensity = 0.1;  // Ajusta este valor si deseas más o menos luz ambiente
     if in_shadow {
         return base_color * ambient_intensity;
     }
@@ -203,7 +223,8 @@ pub fn cast_ray(ray_origin: &Vec3, ray_direction: &Vec3, objects: &[Cube], light
     let diffuse = base_color * intersect.material.albedo[0] * (diffuse_intensity + ambient_intensity);
     let final_color = diffuse + specular;
 
-    return final_color;
+    final_color
+
 }
 
 pub fn render(framebuffer: &mut Framebuffer, objects: &[Cube], camera: &Camera, light: &Light) {
